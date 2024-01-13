@@ -1,3 +1,5 @@
+name: Building macOS binaries of Ungoogled Chromium
+
 on:
   workflow_call:
     inputs:
