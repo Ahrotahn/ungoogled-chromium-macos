@@ -32,7 +32,7 @@ jobs:
         arch: [x86_64, arm64]
       fail-fast: true
       max-parallel: 1
-    uses: iXORTech/ungoogled-chromium-macos/.github/workflows/building.yml@main
+    uses: ./.github/workflows/building.yml
     with:
       arch: ${{ matrix.arch }}
 
