@@ -1,32 +1,13 @@
-name: Build macOS binaries of Ungoogled Chromium
 on:
-  workflow_dispatch:
-  push:
-    paths:
-      - 'patches/**'
-      - 'downloads.ini'
-      - 'revision.txt'
-      - 'flags.macos.gn'
-      - '!build.sh'
-      - '!README.md'
-      - '!LICENSE'
-      - '!devutils/**'
-      - '.github/scripts/force_build.txt'
-  pull_request:
-    paths:
-      - 'patches/**'
-      - 'downloads.ini'
-      - 'revision.txt'
-      - 'flags.macos.gn'
-      - '!build.sh'
-      - '!README.md'
-      - '!LICENSE'
-      - '!devutils/**'
-# alternatively use on.push.branches: release/*
+  workflow_call:
+    inputs:
+      arch:
+        required: true
+        type: string
 
 jobs:
   build_job_01:
-    name: Start Building Ungoogled-Chromium for macOS
+    name: Start Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     outputs:
       status: ${{ steps.build.outputs.status }}
@@ -42,10 +23,14 @@ jobs:
         run: sudo mdutil -a -i off
       - name: Run xcode-select
         run: sudo xcode-select --switch /Applications/Xcode_15.0.1.app
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Download, unpack, and prepare for building
-        run: ./github_before_build.sh | tee -a github_actions_build.log
+        run: ./github_before_build.sh ${{ inputs.arch }} | tee -a github_actions_build.log
       - name: Build
         id: build
         run: ./github_build.sh 2>&1 | tee -a github_actions_build.log
@@ -82,7 +67,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
   
   build_job_02:
-    name: Resuming Building Ungoogled-Chromium for macOS
+    name: Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_01
     if: ${{needs.build_job_01.outputs.status == 'running'}}
@@ -104,8 +89,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -144,7 +133,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_03:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_02
     if: ${{needs.build_job_02.outputs.status == 'running'}}
@@ -166,8 +155,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -206,7 +199,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_04:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_03
     if: ${{needs.build_job_03.outputs.status == 'running'}}
@@ -228,8 +221,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -268,7 +265,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_05:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_04
     if: ${{needs.build_job_04.outputs.status == 'running'}}
@@ -290,8 +287,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -330,7 +331,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_06:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_05
     if: ${{needs.build_job_05.outputs.status == 'running'}}
@@ -352,8 +353,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -392,7 +397,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_07:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_06
     if: ${{needs.build_job_06.outputs.status == 'running'}}
@@ -414,8 +419,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -454,7 +463,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_08:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_07
     if: ${{needs.build_job_07.outputs.status == 'running'}}
@@ -476,8 +485,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build
@@ -516,7 +529,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_09:
-    name: Further Resuming Building Ungoogled-Chromium for macOS
+    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
     runs-on: macos-13
     needs: build_job_08
     if: ${{needs.build_job_08.outputs.status == 'running'}}
@@ -538,8 +551,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
             name: github_build_artifact
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
       - name: Install dependencies
-        run: brew install coreutils ninja python3 --overwrite
+        run: brew install coreutils ninja --overwrite
       - name: Unpack archive of build
         run: ./github_unpack_archive.sh
       - name: Resume Build

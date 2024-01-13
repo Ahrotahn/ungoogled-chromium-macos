@@ -1,0 +1,38 @@
+name: Build macOS binaries of Ungoogled Chromium
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'patches/**'
+      - 'downloads.ini'
+      - 'revision.txt'
+      - 'flags.macos.gn'
+      - '!build.sh'
+      - '!README.md'
+      - '!LICENSE'
+      - '!devutils/**'
+      - '.github/scripts/force_build.txt'
+  pull_request:
+    paths:
+      - 'patches/**'
+      - 'downloads.ini'
+      - 'revision.txt'
+      - 'flags.macos.gn'
+      - '!build.sh'
+      - '!README.md'
+      - '!LICENSE'
+      - '!devutils/**'
+# alternatively use on.push.branches: release/*
+
+jobs:
+  preparing:
+    name: Preparing Build macOS binaries of Ungoogled Chromium
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+      fail-fast: true
+      max-parallel: 1
+    uses: iXORTech/ungoogled-chromium-macos/.github/workflows/build.yml@main
+    with:
+      arch: ${{ matrix.arch }}
+

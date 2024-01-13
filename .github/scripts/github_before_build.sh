@@ -6,6 +6,7 @@ _root_dir=$(dirname $(greadlink -f $0))
 _download_cache="$_root_dir/build/download_cache"
 _src_dir="$_root_dir/build/src"
 _main_repo="$_root_dir/ungoogled-chromium"
+_arch="$1"
 
 mkdir -p "$_src_dir"
 sudo df -h
@@ -22,7 +23,8 @@ mkdir -p "$_download_cache"
 "$_main_repo/utils/domain_substitution.py" apply -r "$_main_repo/domain_regex.list" -f "$_main_repo/domain_substitution.list" "$_src_dir"
 
 shopt -s nocasematch
-if [[ $GITHUB_REF =~ arm || $(git log --pretty='%s' -1) =~ arm  ]]; then
+
+if [[ $_arch == "arm64" ]]; then
   echo 'target_cpu = "arm64"' >> "$_root_dir/flags.macos.gn"
   # sudo xcode-select -s "/Applications/Xcode_13.4.app"
 fi
