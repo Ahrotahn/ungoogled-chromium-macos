@@ -35,4 +35,4 @@ jobs:
     uses: ./.github/workflows/building.yml
     with:
       arch: ${{ matrix.arch }}
-
+      release: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
