@@ -12,7 +12,7 @@ on:
 
 jobs:
   build_job_01:
-    name: Start Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Start Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     outputs:
       status: ${{ steps.build.outputs.status }}
@@ -72,7 +72,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
   
   build_job_02:
-    name: Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_01
     if: ${{needs.build_job_01.outputs.status == 'running'}}
@@ -138,7 +138,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_03:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_02
     if: ${{needs.build_job_02.outputs.status == 'running'}}
@@ -204,7 +204,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_04:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_03
     if: ${{needs.build_job_03.outputs.status == 'running'}}
@@ -270,7 +270,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_05:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_04
     if: ${{needs.build_job_04.outputs.status == 'running'}}
@@ -336,7 +336,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_06:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_05
     if: ${{needs.build_job_05.outputs.status == 'running'}}
@@ -402,7 +402,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_07:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_06
     if: ${{needs.build_job_06.outputs.status == 'running'}}
@@ -468,7 +468,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_08:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_07
     if: ${{needs.build_job_07.outputs.status == 'running'}}
@@ -534,7 +534,7 @@ jobs:
           files: ./release_asset/${{ steps.bake.outputs.file_name }}
 
   build_job_09:
-    name: Further Resuming Building Ungoogled-Chromium for macOS ${{ inputs.arch }}
+    name: Further Resuming Building Ungoogled-Chromium for macOS
     runs-on: macos-13
     needs: build_job_08
     if: ${{needs.build_job_08.outputs.status == 'running'}}
